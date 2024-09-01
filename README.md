@@ -1,4 +1,5 @@
 Apple Auth for React Native
+
 This repository provides a seamless integration of Sign in with Apple authentication within React Native applications. It includes a simple and secure way to implement Apple ID-based authentication, following best practices for iOS development.
 
 ✨ Features:
