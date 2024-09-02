@@ -1,42 +1,40 @@
-// import User from "../models/user.model.js"
-// import bcrypt from "bcryptjs";
-// import generateTokenAndSetCookie from "../utils/generateToken.js";
+import User from "../models/user.model.js"
+import jwt from 'jsonwebtoken'
 
-export const signup = async (req, res) => {
+export const appleAuth = async (req, res) => {
     try {
-        console.log('teste')
+        const { appleUserId, email, fullName, identityToken } = req.body;
+
+        // Check data received
+        if (!appleUserId || !identityToken) {
+            return res.status(400).json({ error: "Apple user ID or identity token is missing" });
+        }
+
+        // Check if user already exists
+        let user = await User.findOne({ appleUserId });
+
+        // Create a new user if dont exists
+        if (!user) {
+            user = new User({ appleUserId, email, fullName });
+            await user.save();
+        }
+
+        // Create token JWT
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '365d',
+        });
+
+        // Send token as res
+        res.status(200).json({
+            id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            token,
+        });
 
     } catch (error) {
-        console.log("Error in signup controller", error.message);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-}
-
-export const login = async (req, res) => {
-    try {
-        // const { email, password } = req.body
-        // const user = await User.findOne({ email })
-        // const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
-
-        // if (!user) {
-        //     return res.status(400).json({ error: "Email did not find" })
-        // }
-
-        // if (!isPasswordCorrect) {
-        //     return res.status(400).json({ error: "Invalid Password" })
-        // }
-
-        // generateTokenAndSetCookie(user._id, res)
-
-        // res.status(200).json({
-        //     _id: user._id,
-        //     fullName: user.fullName,
-        //     email: user.email,
-        // });
-
-    } catch (error) {
-        console.log("Error:", error.message)
-        res.status(500).json({ error: "Error Server" })
+        console.log("Error:", error.message);
+        res.status(500).json({ error: "Server Error" });
     }
 }
 
