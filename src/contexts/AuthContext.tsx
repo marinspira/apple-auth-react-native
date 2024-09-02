@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (credential) {
         const { email, fullName, user, identityToken } = credential;
 
-        const userEmail = email ?? ''; 
+        const userEmail = email ?? '';
         const userFullName = fullName?.givenName || fullName?.familyName
           ? `${fullName?.givenName ?? ''} ${fullName?.familyName ?? ''}`
           : '';
@@ -71,8 +71,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signOut = () => {
-    setLoggedUser(null);
+  const signOut = async () => {
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_SERVER_ADDRESS}/api/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setLoggedUser(null);
+      } else {
+        console.error('Error', data);
+      }
+    } catch (error) {
+      console.error('Error logging out', error);
+    }
   };
 
   return (
