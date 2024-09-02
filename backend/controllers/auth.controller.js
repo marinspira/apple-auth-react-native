@@ -1,7 +1,7 @@
 import User from "../models/user.model.js"
 import jwt from 'jsonwebtoken'
 
-export const appleAuth = async (req, res) => {
+export const signInWithApple = async (req, res) => {
     try {
         const { appleUserId, email, fullName, identityToken } = req.body;
 
@@ -22,6 +22,14 @@ export const appleAuth = async (req, res) => {
         // Create token JWT
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '365d',
+        });
+
+        // Save token on cookie
+        res.cookie('jwt', token, {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: 'strict', 
+            maxAge: 365 * 24 * 60 * 60 * 1000,
         });
 
         // Send token as res

@@ -5,11 +5,11 @@ import PrivateNavigator from './PrivateNavigator';
 import { useAuth } from '../contexts/AuthContext';
 
 const RootNavigator = () => {
-  const { user } = useAuth();
+  const { loggedUser } = useAuth();
 
   return (
     <NavigationContainer>
-      {user ? <PrivateNavigator /> : <AuthNavigator />}
+      {loggedUser ? <PrivateNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

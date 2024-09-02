@@ -12,10 +12,10 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <Text>Profile Screen</Text>
       <Button
-        title="Go to Login"
-        onPress={() => navigation.navigate('Login')}
+        title="Logout"
+        onPress={() => navigation.navigate('Home')}
       />
     </View>
   );

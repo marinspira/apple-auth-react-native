@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           ? `${fullName?.givenName ?? ''} ${fullName?.familyName ?? ''}`
           : '';
 
-        const response = await fetch(`${process.env.EXPO_PUBLIC_SERVER_ADDRESS}/api/auth/appleAuth`, {
+        const response = await fetch(`${process.env.EXPO_PUBLIC_SERVER_ADDRESS}/api/auth/signInWithApple`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
