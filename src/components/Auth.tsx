@@ -1,13 +1,12 @@
-import { Platform } from 'react-native'
-import * as AppleAuthentication from 'expo-apple-authentication'
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { useAuth } from '../contexts/AuthContext';
 import React from 'react';
 
-export function Auth(): React.JSX.Element | undefined {
-  const { signInWithApple } = useAuth()
+export function Auth(): React.JSX.Element | null {
+  const { signInWithApple } = useAuth();
 
-  if (Platform.OS === 'ios')
+  if (Platform.OS === 'ios') {
     return (
       <View>
         <AppleAuthentication.AppleAuthenticationButton
@@ -18,5 +17,8 @@ export function Auth(): React.JSX.Element | undefined {
           onPress={signInWithApple}
         />
       </View>
-    )
+    );
+  }
+
+  return null;
 }
