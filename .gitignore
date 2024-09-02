@@ -4,6 +4,9 @@
 node_modules/
 .env
 env
+backend/.env
+backend/env
+
 
 # Expo
 .expo/
