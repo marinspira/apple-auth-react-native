@@ -17,6 +17,7 @@ Customizable UI: Modify the appearance of the Apple sign-in button to match your
 Before you begin, make sure you meet the following requirements:
 
 Node.js: Ensure you have Node.js installed (version 14.x or higher).
+
 Expo CLI: Install Expo CLI globally on your machine with npm install -g expo-cli.
 Ngrok: To expose your local server to the web and test on real devices.
 
@@ -27,6 +28,13 @@ Clone the repository:
 
 Install the necessary package:
 - npm i
+
+#### Environment Variables
+To get started with the project, you'll need to set up environment variables for your backend. Create a .env file inside the 'backend' folder with the following variables:
+
+- MONGO_DB_URI=<your_mongodb_connection_string>
+- PORT=8000
+- JWT_SECRET=<your_jwt_secret>
 
 ## 🌐 Exposing the Local Server with Ngrok
 To enable Apple authentication and save or create a new user on the data base, you need a public URL for your server; use Ngrok to expose your local server for testing.
