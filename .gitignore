@@ -7,7 +7,6 @@ env
 backend/.env
 backend/env
 
-
 # Expo
 .expo/
 dist/
