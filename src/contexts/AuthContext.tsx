@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import * as AppleAuthentication from 'expo-apple-authentication'
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface User {
   id: any;
@@ -19,6 +20,41 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loggedUser, setLoggedUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    // Check AsyncStorage for a stored token and validate it
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          const response = await fetch(`${process.env.EXPO_PUBLIC_SERVER_ADDRESS}/api/auth/validateToken`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            setLoggedUser({
+              id: data.id,
+              email: data.email,
+              fullName: data.fullName,
+              token: data.token,
+            });
+          } else {
+            await AsyncStorage.removeItem('token');
+          }
+        }
+      } catch (error) {
+        console.error('Error validating token', error);
+        await AsyncStorage.removeItem('token');
+      }
+    };
+
+    checkToken();
+  }, []);
+
   const signInWithApple = async () => {
     try {
       const credential = await AppleAuthentication.signInAsync({
@@ -27,8 +63,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
-
-      console.log(credential)
 
       if (credential) {
         const { email, fullName, user, identityToken } = credential;
@@ -54,20 +88,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const data = await response.json();
 
         if (response.ok) {
+          await AsyncStorage.setItem('token', data.token);
           setLoggedUser({
             id: data.id,
             email: data.email,
             fullName: data.fullName,
             token: data.token,
           });
-
         } else {
-          console.error('Erro ao autenticar com Apple', data);
+          console.error('Error authenticating with Apple', data);
         }
       }
-
     } catch (error) {
-      console.error('Erro no processo de autenticação', error);
+      console.error('Error during authentication', error);
     }
   };
 
@@ -77,15 +110,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        await AsyncStorage.removeItem('token');
         setLoggedUser(null);
       } else {
-        console.error('Error', data);
+        console.error('Error logging out', data);
       }
     } catch (error) {
       console.error('Error logging out', error);
