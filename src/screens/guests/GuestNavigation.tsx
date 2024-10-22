@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../ProfileScreen';
 
 export type PrivateStackParamList = {
   Dashboard: undefined;
@@ -9,7 +9,7 @@ export type PrivateStackParamList = {
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
-const PrivateNavigator = () => {
+const GuestNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="Dashboard">
       <Stack.Screen name="Profile" component={ProfileScreen} />
@@ -17,4 +17,4 @@ const PrivateNavigator = () => {
   );
 };
 
-export default PrivateNavigator;
+export default GuestNavigator;
