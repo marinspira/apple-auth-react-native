@@ -12,7 +12,13 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <Text>Welcome Screen</Text>
+      <Button
+        title="I am a owner"
+      />
+      <Button
+        title="I am a guest"
+      />
       <Button
         title="Go to Login"
         onPress={() => navigation.navigate('Login')}

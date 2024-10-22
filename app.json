@@ -16,6 +16,8 @@
       "usesAppleSignIn": true
     },
     "android": {
+      "package": "com.maria.hostelapp",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
