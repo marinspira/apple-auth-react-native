@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigation/AuthNavigator';
 import { useNavigation } from '@react-navigation/native';
-import { Auth } from '../components/Auth';
+import { Auth } from '../components/auth';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Home'>;
 

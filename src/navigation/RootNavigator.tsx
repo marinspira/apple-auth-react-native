@@ -9,7 +9,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {!loggedUser ? <PrivateNavigator /> : <AuthNavigator />}
+      {loggedUser ? <PrivateNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
